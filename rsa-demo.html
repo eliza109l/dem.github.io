@@ -32,12 +32,12 @@
 
   <div class="step">
     <h2>4. Выбираем открытую экспоненту e</h2>
-    <pre>1 &lt; e &lt; φ(n) и НОД(e, φ(n)) = 1<br>Выбираем e = 7 → НОД(7, 40) = 1 ✅</pre>
+    <pre>1 &lt; e &lt; φ(n) и НОД(e, φ(n)) = 1<br>Выбираем e = 7 → НОД(7, 40) = 1 </pre>
   </div>
 
   <div class="step">
     <h2>5. Находим закрытый ключ d</h2>
-    <pre>Нужно: (e × d) mod φ(n) = 1<br>(7 × d) mod 40 = 1 → d = 23<br>Проверка: 7 × 23 = 161 → 161 mod 40 = 1 ✅</pre>
+    <pre>Нужно: (e × d) mod φ(n) = 1<br>(7 × d) mod 40 = 1 → d = 23<br>Проверка: 7 × 23 = 161 → 161 mod 40 = 1 </pre>
   </div>
 
   <div class="step">
@@ -47,7 +47,7 @@
 
   <div class="step">
     <h2>6. Шифруем сообщение m = 9</h2>
-    <pre>Условие: m &lt; n → 9 &lt; 55 ✅<br>Шифротекст C = m^e mod n = 9^7 mod 55</pre>
+    <pre>Условие: m &lt; n → 9 &lt; 55 <br>Шифротекст C = m^e mod n = 9^7 mod 55</pre>
     <button onclick="encrypt()">Вычислить шифротекст</button>
     <pre id="cipher-result"></pre>
   </div>
@@ -92,7 +92,7 @@
       const d = 23;
       const n = 55;
       const M = modPow(C, d, n);
-      document.getElementById('plain-result').innerHTML = `M = ${C}^${d} mod ${n} = ${M}<br><span class="success">✅ Восстановлено исходное сообщение: ${M}</span>`;
+      document.getElementById('plain-result').innerHTML = `M = ${C}^${d} mod ${n} = ${M}<br><span class="success">Восстановлено исходное сообщение: ${M}</span>`;
     }
   </script>
 </body>
