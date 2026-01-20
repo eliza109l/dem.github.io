@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Простой пример RSA</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    pre { background: #eee; padding: 15px; border-radius: 6px; overflow-x: auto; }
+    .success { color: green; font-weight: bold; }
+    .step { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Простой пример шифрования RSA</h1>
+
+  <div class="step">
+    <h2>1. Выбираем два простых числа</h2>
+    <pre>p = 5<br>q = 11</pre>
+  </div>
+
+  <div class="step">
+    <h2>2. Вычисляем n = p × q</h2>
+    <pre>n = 5 × 11 = 55</pre>
+  </div>
+
+  <div class="step">
+    <h2>3. Вычисляем φ(n) = (p−1)(q−1)</h2>
+    <pre>φ(n) = (5−1) × (11−1) = 4 × 10 = 40</pre>
+  </div>
+
+  <div class="step">
+    <h2>4. Выбираем открытую экспоненту e</h2>
+    <pre>1 &lt; e &lt; φ(n) и НОД(e, φ(n)) = 1<br>Выбираем e = 7 → НОД(7, 40) = 1 ✅</pre>
+  </div>
+
+  <div class="step">
+    <h2>5. Находим закрытый ключ d</h2>
+    <pre>Нужно: (e × d) mod φ(n) = 1<br>(7 × d) mod 40 = 1 → d = 23<br>Проверка: 7 × 23 = 161 → 161 mod 40 = 1 ✅</pre>
+  </div>
+
+  <div class="step">
+    <h2>Ключи</h2>
+    <pre>Открытый ключ: (n, e) = (55, 7)<br>Закрытый ключ: (n, d) = (55, 23)</pre>
+  </div>
+
+  <div class="step">
+    <h2>6. Шифруем сообщение m = 9</h2>
+    <pre>Условие: m &lt; n → 9 &lt; 55 ✅<br>Шифротекст C = m^e mod n = 9^7 mod 55</pre>
+    <button onclick="encrypt()">Вычислить шифротекст</button>
+    <pre id="cipher-result"></pre>
+  </div>
+
+  <div class="step">
+    <h2>7. Расшифровываем шифротекст</h2>
+    <pre>Исходное сообщение M = C^d mod n = C^23 mod 55</pre>
+    <button onclick="decrypt()">Расшифровать</button>
+    <pre id="plain-result"></pre>
+  </div>
+
+  <script>
+    function modPow(base, exp, mod) {
+      // Быстрое возведение в степень по модулю
+      let result = 1n;
+      base = BigInt(base);
+      exp = BigInt(exp);
+      mod = BigInt(mod);
+      while (exp > 0n) {
+        if (exp % 2n === 1n) result = (result * base) % mod;
+        base = (base * base) % mod;
+        exp = exp >> 1n;
+      }
+      return Number(result);
+    }
+
+    let C = null;
+
+    function encrypt() {
+      const m = 9;
+      const e = 7;
+      const n = 55;
+      C = modPow(m, e, n);
+      document.getElementById('cipher-result').textContent = `C = ${m}^${e} mod ${n} = ${C}`;
+    }
+
+    function decrypt() {
+      if (C === null) {
+        document.getElementById('plain-result').textContent = 'Сначала зашифруйте сообщение!';
+        return;
+      }
+      const d = 23;
+      const n = 55;
+      const M = modPow(C, d, n);
+      document.getElementById('plain-result').innerHTML = `M = ${C}^${d} mod ${n} = ${M}<br><span class="success">✅ Восстановлено исходное сообщение: ${M}</span>`;
+    }
+  </script>
+</body>
+</html>
